@@ -1,74 +1,69 @@
 #include<stdio.h>
-int G[10][10], parent[10];
-
-int findP(int i)
-{
-	while(parent[i])
-		i = parent[i];
-	return i;
-}
-
-int uni(int i, int j)
-{
-	if(i != j)
-	{
-		parent[j] = i;
-		return 1;
-	}
-	return 0;
-}
-
+#include<conio.h>
+#include<stdlib.h>
+int i,j,k,a,b,u,v,n,ne=1;
+int min, mincost = 0, cost[9][9], parent[9];
+int find(int);
+int uni(int,int);
 void main()
 {
-	int i, j, a, b, v, u, min, n, edges=0, minCost=0;
-	printf("HOW MANY VERTICES: ");
-	scanf("%d", &n);
-	printf("ENTER THE ADJUCENCY MATRIX:\n");
-	for(i=0; i<n; i++)
-	{
-		for(j=0; j<n; j++)
-		{
-			scanf("%d", &G[i][j]);
-			if(G[i][j] == 0)
-				G[i][j] = 999;
-		}
-	}
-	
-	
-	//Printing adj matrix
-	for(i=0; i<n; i++)
-	{
-		for(j=0; j<n; j++)
-		{
-			printf("%d ", G[i][j]);
-		}
-		printf("\n");
-	}
-	
-	printf("EDGES : WEIGHT\n");
-	while(edges < n-1)
-	{
-		for(i=0, min = 999; i<n; i++)
-		{
-			for(j=0; j<n; j++)
-			{
-				if(G[i][j] < min)
-				{
-					min = G[i][j];
-					a = u = i;
-					b = v = j;
-				}
-			}
-		}
-		u = findP(u);
-		v = findP(v);
-		if(uni(u,v))
-		{
-			printf("%d-%d : %d\n", a, b, min);
-			edges++;
-			minCost += min;
-		}
-		G[a][b] = G[b][a] = 999;
-	}
-	printf("Min Cost: %d\n", minCost);
+clrscr();
+printf("\n\t Implementation of Kruskal's algorithm \n");
+printf("\n Enter number of vertices : ");
+scanf("%d",&n);
+printf("\n Enter the cost adjacency matrix: \n");
+
+for(i=1;i<=n;i++)
+{
+for(j=1;j<=n;j++)
+{
+scanf("%d",&cost[i][j]);
+ if(cost[i][j]==0)
+  cost[i][j] = 999;
+}
+}
+
+printf("The edge of minimum cost spanning tree \n");
+while(ne < n)
+ {
+ for(i=1,min=999;i<=n;i++)
+ {
+ for(j=1;j<=n;j++)
+ {
+ if(cost[i][j] < min)
+  {
+  min=cost[i][j];
+  a=u=i;
+  b=v=j;
+  }
+ }
+ }
+
+u = find(u);
+v = find(v);
+if(uni(u,v))
+ {
+ printf("%d edge(%d,%d)=%d\n", ne++, a, b, min);
+ mincost += min;
+ }
+
+cost[a][b] = cost[b][a] = 999;
+}
+printf("\n \t Minimum cost=%d \n", mincost);
+getch();
+}
+int find(int i)
+{
+while(parent[i])
+i = parent[i];
+return i;
+}
+int uni(int i,int j)
+{
+if(i != j)
+ {
+ parent[j] = i;
+ return 1;
+ }
+ return 0;
 }
